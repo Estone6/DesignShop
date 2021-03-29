@@ -4,20 +4,32 @@ import { Table, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { getUserList } from "../actions/userActions";
+import { getUserList, deleteUser } from "../actions/userActions";
 
-const UserListScreen = () => {
+const UserListScreen = ({ history }) => {
   const dispatch = useDispatch();
 
   const userList = useSelector((state) => state.userList);
   const { loading, error, users } = userList;
 
-  useEffect(() => {
-    dispatch(getUserList());
-  }, [dispatch]);
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
-  const handleDelete = () => {
-    //
+  const userDelete = useSelector((state) => state.userDelete);
+  const { success: successDelete } = userDelete;
+
+  useEffect(() => {
+    if (userInfo && userInfo.isAdmin) {
+      dispatch(getUserList());
+    } else {
+      history.push("/login");
+    }
+  }, [dispatch, history, userInfo, successDelete]);
+
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure ?")) {
+      dispatch(deleteUser(id));
+    }
   };
 
   return (
@@ -38,7 +50,7 @@ const UserListScreen = () => {
               <th></th>
             </tr>
           </thead>
-          <tb>
+          <tbody>
             {users.map((user) => (
               <tr key={user._id}>
                 <td>{user._id}</td>
@@ -54,7 +66,7 @@ const UserListScreen = () => {
                   )}
                 </td>
                 <td>
-                  <LinkContainer to={`/user/${user._id}/edit`}>
+                  <LinkContainer to={`/admin/user/${user._id}/edit`}>
                     <Button variant="light" className="btn-sm">
                       <i className="fas fa-edit"></i>
                     </Button>
@@ -62,14 +74,14 @@ const UserListScreen = () => {
                   <Button
                     variant="danger"
                     className="btn-sm"
-                    onClick={handleDelete(user._id)}
+                    onClick={() => handleDelete(user._id)}
                   >
                     <i className="fas fa-trash"></i>
                   </Button>
                 </td>
               </tr>
             ))}
-          </tb>
+          </tbody>
         </Table>
       )}
     </>

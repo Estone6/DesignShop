@@ -5,6 +5,17 @@ import {
   GET_PRODUCT_DETAILS,
   STORE_PRODUCT_DETAILS,
   ERROR_PRODUCT_DETAILS,
+  PRODUCT_DELETE_REQUEST,
+  PRODUCT_DELETE_SUCCESS,
+  PRODUCT_DELETE_FAIL,
+  PRODUCT_CREATE_REQUEST,
+  PRODUCT_CREATE_SUCCESS,
+  PRODUCT_CREATE_FAIL,
+  PRODUCT_CREATE_RESET,
+  PRODUCT_UPDATE_REQUEST,
+  PRODUCT_UPDATE_SUCCESS,
+  PRODUCT_UPDATE_FAIL,
+  PRODUCT_UPDATE_RESET,
 } from "../constants/productsConstants";
 
 export const productListReducer = (state = { products: [] }, action) => {
@@ -31,6 +42,49 @@ export const productDetailsReducer = (
       return { loading: false, product: action.data };
     case ERROR_PRODUCT_DETAILS:
       return { loading: false, error: action.error };
+    default:
+      return state;
+  }
+};
+
+export const productDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_DELETE_REQUEST:
+      return { loading: true };
+    case PRODUCT_DELETE_SUCCESS:
+      return { loading: false, success: true };
+    case PRODUCT_DELETE_FAIL:
+      return { loading: false, error: action.error };
+    default:
+      return state;
+  }
+};
+
+export const productCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_CREATE_REQUEST:
+      return { loading: true };
+    case PRODUCT_CREATE_SUCCESS:
+      return { loading: false, success: true, product: action.data };
+    case PRODUCT_CREATE_FAIL:
+      return { loading: false, error: action.error };
+    case PRODUCT_CREATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const productUpdateReducer = (state = { product: {} }, action) => {
+  switch (action.type) {
+    case PRODUCT_UPDATE_REQUEST:
+      return { loading: true };
+    case PRODUCT_UPDATE_SUCCESS:
+      return { loading: false, success: true, product: action.data };
+    case PRODUCT_UPDATE_FAIL:
+      return { loading: false, error: action.error };
+    case PRODUCT_UPDATE_RESET:
+      return { product: {} };
     default:
       return state;
   }
