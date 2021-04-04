@@ -9,7 +9,7 @@ import {
   getProductsList,
   deleteProduct,
   createProduct,
-} from "../actions/productsActions";
+} from "../actions/productActions";
 import { PRODUCT_CREATE_RESET } from "../constants/productsConstants";
 
 const ProductListScreen = ({ history, match }) => {
