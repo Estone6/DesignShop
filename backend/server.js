@@ -43,11 +43,9 @@ if (process.env.NODE_ENV === "production") {
   );
 } else {
   app.get("/", (req, res) => {
-    res.send("API is running....");
+    res.send("API is running...");
   });
 }
-
-console.log(path.resolve(path.resolve(), "frontend", "build", "index.html"));
 
 app.use(notFound);
 
