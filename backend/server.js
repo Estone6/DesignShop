@@ -16,6 +16,10 @@ connectDB();
 
 const app = express();
 
+app.get("/", (req, res) => {
+  res.send("API is running...");
+});
+
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
@@ -31,18 +35,18 @@ app.get("/api/config/paypal", (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
 );
 
-app.use("/uploads", express.static(path.join(path.resolve(), "/uploads")));
+app.use('/uploads', express.static(path.join(path.resolve(), '/uploads')))
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(path.resolve(), "/frontend/build")));
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(path.resolve(), '/frontend/build')))
 
-  app.get("*", (req, res) =>
-    res.sendFile(path.resolve(path.resolve(), "frontend", "build", "index.html"))
-  );
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(path.resolve(), 'frontend', 'build', 'index.html'))
+  )
 } else {
-  app.get("/", (req, res) => {
-    res.send("API is running...");
-  });
+  app.get('/', (req, res) => {
+    res.send('API is running....')
+  })
 }
 
 app.use(notFound);
